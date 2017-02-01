@@ -40,6 +40,8 @@ open class Segmentio: UIView {
             if selectedSegmentioIndex != oldValue {
                 reloadSegmentio()
                 valueDidChange?(self, selectedSegmentioIndex)
+            } else {
+                NotificationCenter.default.post(name: Notification.Name("kSegmentControlSameItemWasPressed"), object: nil)
             }
         }
     }
