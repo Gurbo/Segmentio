@@ -27,6 +27,7 @@ class SegmentioCell: UICollectionViewCell {
     fileprivate var style = SegmentioStyle.imageOverLabel
     fileprivate let verticalSeparatorLayer = CAShapeLayer()
     fileprivate let badgePresenter = BadgeViewPresenter()
+    fileprivate var indicatorRatio: CGFloat = 1.0
     
     override var isHighlighted: Bool {
         get {
@@ -114,9 +115,10 @@ class SegmentioCell: UICollectionViewCell {
     
     // MARK: - Configure
     
-    func configure(content: SegmentioItem, style: SegmentioStyle, options: SegmentioOptions, isLastCell: Bool) {
+    func configure(content: SegmentioItem, style: SegmentioStyle, options: SegmentioOptions, isLastCell: Bool, indicatorRatio:CGFloat) {
         self.options = options
         self.style = style
+        self.indicatorRatio = indicatorRatio
         setupContent(content: content)
         if let indicatorOptions = self.options.indicatorOptions {
             setupConstraint(indicatorOptions: indicatorOptions)

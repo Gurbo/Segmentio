@@ -555,8 +555,11 @@ extension Segmentio: UICollectionViewDataSource {
             content: segmentioItems[indexPath.row],
             style: segmentioStyle,
             options: segmentioOptions,
-            isLastCell: indexPath.row == segmentioItems.count - 1
+            isLastCell: indexPath.row == segmentioItems.count - 1,
+            indicatorRatio: (segmentioOptions.indicatorOptions?.cellsRatioArray[indexPath.row])!
         )
+        
+
         
         cell.configure(selected: (indexPath.row == selectedSegmentioIndex))
         
