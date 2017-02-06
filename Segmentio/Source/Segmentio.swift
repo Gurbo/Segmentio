@@ -334,30 +334,14 @@ open class Segmentio: UIView {
     // MARK: Move shape layer to item
     
     fileprivate func moveShapeLayerAtContext() {
-        if let indicatorLayer = indicatorLayer, let options = segmentioOptions.indicatorOptions {
+        if let indicatorLayer = indicatorLayer, let _ = segmentioOptions.indicatorOptions {
             
-            var item: ItemInSuperview?
-            
-            if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
-                item = itemInSuperview(ratio: (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
-                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
-                    currentSegmentionItemIndex = currentSegmentionItemIndex + 1
-                } else {
-                    currentSegmentionItemIndex = 0
-                }
-            } else {
-                print("-------------------------------------------------------------------------------------------------------------------------------")
-                print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
-                print("-------------------------------------------------------------------------------------------------------------------------------")
-                item = itemInSuperview(ratio: 1)
-            }
-            
-            
-            let context = contextForItem(item!)
+            let item: ItemInSuperview = createItem()
+            let context = contextForItem(item)
             
             let points = Points(
                 context: context,
-                item: item!,
+                item: item,
                 pointY: indicatorPointY()
             )
             
@@ -370,7 +354,7 @@ open class Segmentio: UIView {
         }
         
         if let selectedLayer = selectedLayer {
-            let item = itemInSuperview()
+            let item = createItem()
             let context = contextForItem(item)
             
             let points = Points(
@@ -388,6 +372,25 @@ open class Segmentio: UIView {
         }
     }
     
+    fileprivate func createItem() -> ItemInSuperview{
+        var item: ItemInSuperview?
+        
+        if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
+            item = itemInSuperview(ratio: (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
+            if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
+                currentSegmentionItemIndex = currentSegmentionItemIndex + 1
+            } else {
+                currentSegmentionItemIndex = 0
+            }
+        } else {
+            print("-------------------------------------------------------------------------------------------------------------------------------")
+            print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
+            print("-------------------------------------------------------------------------------------------------------------------------------")
+            item = itemInSuperview(ratio: 1)
+        }
+        return item!
+    }
+    
     // MARK: Scroll to item
     
     fileprivate func scrollToItemAtContext() {
@@ -395,7 +398,7 @@ open class Segmentio: UIView {
             return
         }
         
-        let item = itemInSuperview()
+        let item = createItem()
         let context = contextForItem(item)
         
         if context.isLastOrPrelastVisibleCell == true {
@@ -419,6 +422,7 @@ open class Segmentio: UIView {
             )
         }
     }
+    
     
     // MARK: Move shape layer
     
@@ -607,8 +611,8 @@ extension Segmentio: UIScrollViewDelegate {
             return
         }
         
-        if let options = segmentioOptions.indicatorOptions, let indicatorLayer = indicatorLayer {
-            let item = itemInSuperview(ratio: options.ratio)
+        if let _ = segmentioOptions.indicatorOptions, let indicatorLayer = indicatorLayer {
+            let item = createItem()
             moveShapeLayer(
                 indicatorLayer,
                 startPoint: CGPoint(x: item.startX, y: indicatorPointY()),
@@ -618,7 +622,7 @@ extension Segmentio: UIScrollViewDelegate {
         }
         
         if let selectedLayer = selectedLayer {
-            let item = itemInSuperview()
+            let item = createItem()
             moveShapeLayer(
                 selectedLayer,
                 startPoint: CGPoint(x: item.startX, y: bounds.midY),
