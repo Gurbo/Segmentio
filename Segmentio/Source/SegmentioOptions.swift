@@ -106,14 +106,15 @@ public struct SegmentioIndicatorOptions {
     var ratio: CGFloat
     var height: CGFloat
     var color: UIColor
+    var cellsRatioArray: [CGFloat]
     
-    public init(type: SegmentioIndicatorType = .bottom, ratio: CGFloat = 1, height: CGFloat = 2, color: UIColor = .orange) {
+    public init(type: SegmentioIndicatorType = .bottom, ratio: CGFloat = 1, height: CGFloat = 2, color: UIColor = .orange, cellsRatioArray: [CGFloat] = [1.0, 1.0, 1.0, 1.0]) {
         self.type = type
         self.ratio = ratio
         self.height = height
         self.color = color
+        self.cellsRatioArray = cellsRatioArray
     }
-    
 }
 
 // MARK: - Control options
