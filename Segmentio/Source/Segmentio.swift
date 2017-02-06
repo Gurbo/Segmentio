@@ -335,12 +335,29 @@ open class Segmentio: UIView {
     
     fileprivate func moveShapeLayerAtContext() {
         if let indicatorLayer = indicatorLayer, let options = segmentioOptions.indicatorOptions {
-            let item = itemInSuperview(ratio: options.ratio)
-            let context = contextForItem(item)
+            
+            var item: ItemInSuperview?
+            
+            if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
+                item = itemInSuperview(ratio: (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
+                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
+                    currentSegmentionItemIndex = currentSegmentionItemIndex + 1
+                } else {
+                    currentSegmentionItemIndex = 0
+                }
+            } else {
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                item = itemInSuperview(ratio: 1)
+            }
+            
+            
+            let context = contextForItem(item!)
             
             let points = Points(
                 context: context,
-                item: item,
+                item: item!,
                 pointY: indicatorPointY()
             )
             
@@ -477,20 +494,8 @@ open class Segmentio: UIView {
                 width: floor(collectionViewWidth / maxVisibleItems),
                 height: collectionView.frame.height
             )
+            shapeLayerWidth = floor(cellWidth * ratio)
             
-            if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! ==  segmentioOptions.maxVisibleItems {
-                shapeLayerWidth = floor(cellWidth * (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
-                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
-                    currentSegmentionItemIndex = currentSegmentionItemIndex + 1
-                } else {
-                    currentSegmentionItemIndex = 0
-                }
-            } else {
-                print("-------------------------------------------------------------------------------------------------------------------------------")
-                print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
-                print("-------------------------------------------------------------------------------------------------------------------------------")
-                shapeLayerWidth = floor(cellWidth * ratio)
-            }
         }
         
         return ItemInSuperview(
