@@ -56,6 +56,7 @@ open class Segmentio: UIView {
     fileprivate var bottomSeparatorView: UIView?
     fileprivate var indicatorLayer: CAShapeLayer?
     fileprivate var selectedLayer: CAShapeLayer?
+    fileprivate var currentSegmentionItemIndex: Int = 0
     
     // MARK: - Lifecycle
     
@@ -477,7 +478,19 @@ open class Segmentio: UIView {
                 height: collectionView.frame.height
             )
             
-            shapeLayerWidth = floor(cellWidth * ratio)
+            if segmentioOptions.maxVisibleItems == (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! {
+                shapeLayerWidth = floor(cellWidth * (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
+                if currentSegmentionItemIndex < segmentioOptions.maxVisibleItems {
+                    currentSegmentionItemIndex = currentSegmentionItemIndex + 1
+                } else {
+                    currentSegmentionItemIndex = 0
+                }
+            } else {
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                shapeLayerWidth = floor(cellWidth * ratio)
+            }
         }
         
         return ItemInSuperview(
