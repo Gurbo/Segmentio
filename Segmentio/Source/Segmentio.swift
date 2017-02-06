@@ -478,9 +478,9 @@ open class Segmentio: UIView {
                 height: collectionView.frame.height
             )
             
-            if segmentioOptions.maxVisibleItems == (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! {
+            if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! ==  segmentioOptions.maxVisibleItems {
                 shapeLayerWidth = floor(cellWidth * (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
-                if currentSegmentionItemIndex < segmentioOptions.maxVisibleItems {
+                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
                     currentSegmentionItemIndex = currentSegmentionItemIndex + 1
                 } else {
                     currentSegmentionItemIndex = 0
