@@ -338,7 +338,7 @@ open class Segmentio: UIView {
         if let indicatorLayer = indicatorLayer, let _ = segmentioOptions.indicatorOptions {
             if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
                 itemRatio = (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!
-                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 2) {
+                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
                     currentSegmentionItemIndex = currentSegmentionItemIndex + 1
                 } else {
                     currentSegmentionItemIndex = 0
