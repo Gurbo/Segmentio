@@ -403,7 +403,7 @@ open class Segmentio: UIView {
         
         if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
             itemRatio = (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!
-            if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 2) {
+            if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
                 currentSegmentionItemIndex = currentSegmentionItemIndex + 1
             } else {
                 currentSegmentionItemIndex = 0
@@ -632,7 +632,7 @@ extension Segmentio: UIScrollViewDelegate {
             
             if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
                 itemRatio = (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!
-                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 2) {
+                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
                     currentSegmentionItemIndex = currentSegmentionItemIndex + 1
                 } else {
                     currentSegmentionItemIndex = 0
