@@ -334,9 +334,24 @@ open class Segmentio: UIView {
     // MARK: Move shape layer to item
     
     fileprivate func moveShapeLayerAtContext() {
+        var itemRatio: CGFloat = 1.0
         if let indicatorLayer = indicatorLayer, let _ = segmentioOptions.indicatorOptions {
+            if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
+                itemRatio = (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!
+                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 2) {
+                    currentSegmentionItemIndex = currentSegmentionItemIndex + 1
+                } else {
+                    currentSegmentionItemIndex = 0
+                }
+            } else {
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                
+            }
             
-            let item: ItemInSuperview = createItem()
+            
+            let item: ItemInSuperview = createItemWithRatio(ratio: itemRatio)
             let context = contextForItem(item)
             
             let points = Points(
@@ -354,7 +369,7 @@ open class Segmentio: UIView {
         }
         
         if let selectedLayer = selectedLayer {
-            let item = createItem()
+            let item: ItemInSuperview = createItemWithRatio(ratio: itemRatio)
             let context = contextForItem(item)
             
             let points = Points(
@@ -372,12 +387,23 @@ open class Segmentio: UIView {
         }
     }
     
-    fileprivate func createItem() -> ItemInSuperview{
+    fileprivate func createItemWithRatio(ratio: CGFloat) -> ItemInSuperview{
         var item: ItemInSuperview?
+        item = itemInSuperview(ratio: ratio)
+        return item!
+    }
+    
+    // MARK: Scroll to item
+    
+    fileprivate func scrollToItemAtContext() {
+        var itemRatio: CGFloat = 1.0
+        guard let numberOfSections = segmentioCollectionView?.numberOfSections else {
+            return
+        }
         
         if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
-            item = itemInSuperview(ratio: (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!)
-            if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 1) {
+            itemRatio = (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!
+            if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 2) {
                 currentSegmentionItemIndex = currentSegmentionItemIndex + 1
             } else {
                 currentSegmentionItemIndex = 0
@@ -386,19 +412,10 @@ open class Segmentio: UIView {
             print("-------------------------------------------------------------------------------------------------------------------------------")
             print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
             print("-------------------------------------------------------------------------------------------------------------------------------")
-            item = itemInSuperview(ratio: 1)
-        }
-        return item!
-    }
-    
-    // MARK: Scroll to item
-    
-    fileprivate func scrollToItemAtContext() {
-        guard let numberOfSections = segmentioCollectionView?.numberOfSections else {
-            return
+            
         }
         
-        let item = createItem()
+        let item: ItemInSuperview = createItemWithRatio(ratio: itemRatio)
         let context = contextForItem(item)
         
         if context.isLastOrPrelastVisibleCell == true {
@@ -610,9 +627,23 @@ extension Segmentio: UIScrollViewDelegate {
         if isPerformingScrollAnimation {
             return
         }
-        
+        var itemRatio: CGFloat = 1.0
         if let _ = segmentioOptions.indicatorOptions, let indicatorLayer = indicatorLayer {
-            let item = createItem()
+            
+            if (segmentioOptions.indicatorOptions?.cellsRatioArray.count)! == segmentioOptions.maxVisibleItems {
+                itemRatio = (segmentioOptions.indicatorOptions?.cellsRatioArray[currentSegmentionItemIndex])!
+                if currentSegmentionItemIndex < (segmentioOptions.maxVisibleItems - 2) {
+                    currentSegmentionItemIndex = currentSegmentionItemIndex + 1
+                } else {
+                    currentSegmentionItemIndex = 0
+                }
+            } else {
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                print("PLEASE SET cellsRatioArray for YOUR SEGMENTIO CONTROL, maxVisibleItems SHOULD BE SET TO NUMBER OF SEGMENTS IN SEGMENTIO CONTROL")
+                print("-------------------------------------------------------------------------------------------------------------------------------")
+                
+            }
+            let item = createItemWithRatio(ratio: itemRatio)
             moveShapeLayer(
                 indicatorLayer,
                 startPoint: CGPoint(x: item.startX, y: indicatorPointY()),
@@ -622,7 +653,7 @@ extension Segmentio: UIScrollViewDelegate {
         }
         
         if let selectedLayer = selectedLayer {
-            let item = createItem()
+            let item = createItemWithRatio(ratio: itemRatio)
             moveShapeLayer(
                 selectedLayer,
                 startPoint: CGPoint(x: item.startX, y: bounds.midY),
