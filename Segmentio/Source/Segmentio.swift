@@ -500,6 +500,8 @@ open class Segmentio: UIView {
             shapeLayerWidth = floor(cellWidth * ratio)
             
         }
+        let userInfo = ["tabWidth":cellWidth]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "kTabCellWidthNotification"), object: nil, userInfo: userInfo)
         
         return ItemInSuperview(
             collectionViewWidth: collectionViewWidth,
