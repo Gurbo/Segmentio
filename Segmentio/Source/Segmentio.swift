@@ -38,9 +38,9 @@ open class Segmentio: UIView {
     open var selectedSegmentioIndex = -1 {
         didSet {
             if selectedSegmentioIndex != oldValue {
+                NotificationCenter.default.post(name: Notification.Name("kSegmentControlAnotherItemWasPressed"), object: nil)
                 reloadSegmentio()
                 valueDidChange?(self, selectedSegmentioIndex)
-                NotificationCenter.default.post(name: Notification.Name("kSegmentControlAnotherItemWasPressed"), object: nil)
             } else {
                 NotificationCenter.default.post(name: Notification.Name("kSegmentControlSameItemWasPressed"), object: nil)
             }
